@@ -3,11 +3,10 @@
 
 #### Setup
    * [install PHP](https://www.php.net/manual/en/install.php)
-   * clone this repository to web-root/omlu
+   * clone this repository 
    * Launch a PHP server<br>
      `php -S localhost:3000 server.php`
-   * open your app on http://localhost:3000/#[appname]<br>
-     (example: #plain)
+   * open your app on http://localhost:3000/#[appname]  <br> (appnames: plain, dipain, diflashcard)
    * have fun developping
    * commit your changes
 
