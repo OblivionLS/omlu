@@ -60,25 +60,15 @@ export const plain = ({ query, store, info }) => {
 			width: 50%;
 			position: absolute;
 		`, { class: "element", id: "element" }, m("gem-wrapper", { app: 'diplain' }, null)),
-	))
+		))
 	  
 		return { view, oncreate }
 	  }
 
 	return {
-		view: () => [ m(App)
-			// 		m("div" + b`
-			// background-color: red;
-			// padding: 20px;
-			// width: 50%;
-			// position: absolute;
-			// `, { class: "element", id: "element" }, m("gem-wrapper", { app: 'diplain' }, null)),
-
-			// m("script", anime({
-			// 	targets: element,
-			// 	translateX: 250
-			// }))
+		view: () => [ 
 			
+			m(App)
 		]
 	}
 }
