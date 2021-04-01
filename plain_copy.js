@@ -44,25 +44,36 @@ export const plain = ({ query, store, info }) => {
 	};
 	const INTERVAL = 1000
 	function App(vnode) {
-		const oncreate = () => anime({
-		  targets: vnode.dom.querySelectorAll('.box'),
-		  translateY: 200,
-		  opacity: 1,
-		  loop: true,
-		  easing: 'easeInQuad',
-		  duration: (el, i) => i * INTERVAL + INTERVAL
-		})
+		function onclickFunction() {
+				anime({
+					targets: vnode.dom.querySelectorAll('.element'),
+					translateY: 200,
+					opacity: 1,
+					loop: false,
+					easing: 'easeInQuad',
+					duration: (el, i) => i * INTERVAL + INTERVAL
+				  })
+				
+		}
 		
-		const view = _ => m('div.frame' + b`background-color: blue`, m('.box',
-		m("div" + b`
+		const view = _ => m('div.frame' + b`background-color: blue`, 
+		
+			m("div" + b`
 			background-color: red;
 			padding: 20px;
 			width: 50%;
 			position: absolute;
-		`, { class: "element", id: "element" }, m("gem-wrapper", { app: 'diplain' }, null)),
-		))
+			`,  {class: "element"},
+				m("gem-wrapper" + b`position:relative`, { app: 'diplain' }, 
+					m("button" + b`
+						height: 20px; 
+						width:50px`, {
+							onclick: onclickFunction.bind()
+						}, null)
+			)),
+		)
 	  
-		return { view, oncreate }
+		return { view, onclickFunction}
 	  }
 
 	return {
