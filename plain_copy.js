@@ -6,6 +6,7 @@ import { col } from "/core/utils.js";
 
 const limit = 5000;
 
+
 export const plain = ({ query, store, info }) => {
 
 	const enabled = () => store()?.text != query()?.text;
@@ -42,17 +43,27 @@ export const plain = ({ query, store, info }) => {
 	position: absolute;
 	`, { class: "element", id: "element" }, m("gem-wrapper", { app: 'diplain' }, null))
 	};
-	const INTERVAL = 1000
+	const INTERVAL = 1000;
 	function App(vnode) {
+		let wasClicked = true;
 		function onclickFunction() {
-				anime({
-					targets: vnode.dom.querySelectorAll('.element'),
-					translateY: 200,
-					opacity: 1,
-					loop: false,
-					easing: 'easeInQuad',
-					duration: (el, i) => i * INTERVAL + INTERVAL
-				  })
+		 if(wasClicked){
+			anime({
+				targets: vnode.dom.querySelectorAll('.element'),
+				translateY: 200,
+				easing: 'easeInQuad',
+				duration: (el, i) => i * INTERVAL + INTERVAL
+			  })
+			  wasClicked = false;
+		 }else{
+			anime({
+				targets: vnode.dom.querySelectorAll('.element'),
+				translateY: 0,
+				easing: 'easeInQuad',
+				duration: (el, i) => i * INTERVAL + INTERVAL
+			  })
+			  wasClicked = true
+		 }
 				
 		}
 		
