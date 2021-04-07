@@ -8,6 +8,8 @@ const limit = 5000;
 
 b.css(".element", `
 background-color: white;
+border-color: lightgrey;
+border-style:solid;
 padding: 20px;
 width: 100%;
 position: absolute;
@@ -18,12 +20,14 @@ b.css(".skip", `
 height: 20px; 
 width:50px;
 position:absolute;
+top:2%;
 left: 2%
 `)
 b.css(".solve", `
 height: 20px; 
 width:50px;
 position:absolute;
+top:2%;
 right: 2%
 `)
 b.css(".frameTop", `
@@ -55,7 +59,7 @@ let exercises;
 let bottomExercise
 let top;
 let bottom;
-let start; 
+let start;
 
 
 
@@ -67,15 +71,18 @@ function onclickSolve() {
 		duration: 1
 	});
 	tl.to(".frameBottom", {
-		y: '-100%',
-		scale: 1.3,
+		top: "5%",
+		width: "50%",
+		height: "50%",
+		left: "25%",
 		duration: 1,
 	});
 
 	setTimeout(() => {
 		start += 1;
 		console.log("start was updated to: " + start
-	);}, 1000);
+		);
+	}, 1000);
 
 	setTimeout(updating, 2100);
 
@@ -88,11 +95,15 @@ function updating() {
 	tl.to(".frameTop", {
 		x: 0,
 		opacity: 1,
-		duration: 0
+		duration: 0,
 	});
 	tl.to(".frameBottom", {
-		y: '0%',
-		scale: 1,
+		height: "40%",
+		width: "40%",
+		left: "30%",
+		top:null,
+		bottom: "5%",
+		opacity:1,
 		duration: 0,
 	});
 	m.redraw();
@@ -130,7 +141,7 @@ export const plain = ({ query, store, info }) => {
 			}, "solve"),
 			m("gem-wrapper" + b`position:absolute; bottom: 2%; left: 2%; width:95%`, { app: exercise }, text)]
 		);
-		
+
 		exercises = [element('diplain', "first element"), element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")];
 		bottomExercise = [element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")]
 		// top = exercises[0];
