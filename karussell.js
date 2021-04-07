@@ -55,6 +55,67 @@ let exercises;
 let bottomExercise
 let top;
 let bottom;
+let start; 
+
+
+
+let tl = gsap.timeline({ repeat: 0, repeatDelay: 0 });
+function onclickSolve() {
+	tl.to(".frameTop", {
+		x: 200,
+		opacity: 0,
+		duration: 1
+	});
+	tl.to(".frameBottom", {
+		y: '-100%',
+		scale: 1.3,
+		duration: 1,
+	});
+
+	setTimeout(() => {
+		start += 1;
+		console.log("start was updated to: " + start
+	);}, 1000);
+
+	setTimeout(updating, 2100);
+
+}
+
+let wasClicked = true;
+function updating() {
+	console.log(start);
+
+	tl.to(".frameTop", {
+		x: 0,
+		opacity: 1,
+		duration: 0
+	});
+	tl.to(".frameBottom", {
+		y: '0%',
+		scale: 1,
+		duration: 0,
+	});
+	m.redraw();
+}
+
+function onclickSkip() {
+	if (wasClicked) {
+		gsap.to(".frameTop", {
+			x: -200,
+			opacity: 0,
+			duration: 1
+		})
+		wasClicked = false;
+	} else {
+		gsap.to(".frameTop", {
+			y: 0,
+			duration: 1
+		})
+
+		wasClicked = true
+	}
+
+}
 
 export const plain = ({ query, store, info }) => {
 	function App(vnode) {
@@ -69,73 +130,22 @@ export const plain = ({ query, store, info }) => {
 			}, "solve"),
 			m("gem-wrapper" + b`position:absolute; bottom: 2%; left: 2%; width:95%`, { app: exercise }, text)]
 		);
+		
 		exercises = [element('diplain', "first element"), element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")];
 		bottomExercise = [element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")]
-		top = exercises[0];
+		// top = exercises[0];
 		// bottom = m("div", { class: "element", id: "frame" }, "default element");
-		bottom = exercises.slice(1,2);
-		let wasClicked = true;
+		// bottom = exercises.slice(1, 2);
+		start = 0;
 
-		let start = 0;
-		let tl = gsap.timeline({repeat: 0, repeatDelay: 0});
-
-		function onclickSolve() {
-				tl.to(".frameTop", {
-					x: 200,
-					opacity: 0,
-					duration: 1
-				});
-				tl.to(".frameBottom", {
-					y: '-100%',
-					scale: 1.2,
-					duration: 1,
-				});
-				setTimeout(updating,2500)
-		}
-
-		function updating(){
-			start += 1;
-
-				tl.to(".frameTop", {
-					x: 0,
-					opacity: 1,
-					duration: 0
-				});
-				tl.to(".frameBottom", {
-					y: '0%',
-					scale: 1,
-					duration: 0,
-				});
-		}
-
-		function onclickSkip() {
-			if (wasClicked) {
-				gsap.to(".frameTop", {
-					x: -200,
-					opacity: 0,
-					duration: 1
-				})
-				wasClicked = false;
-			} else {
-				gsap.to(".frameTop", {
-					y: 0,
-					duration: 1
-				})
-
-				wasClicked = true
-			}
-
-		}
+		const view = _ => [m('div', { class: "frameTop" }, exercises[start]),
+		m('div', { class: "frameBottom" }, bottomExercise[start]),
+		m('h1' + b`position:absolute; top:2%; left:2%; z-index:20;`, start)
+			// m('div', {class:"frameHidden"}, exercises[2])
+		]
 
 
-		const view = _ => [m('div', {class:"frameTop"}, exercises[start]),
-		m('div', {class:"frameBottom"}, bottomExercise[start]),
-		m('h1'+b`position:absolute; top:2%; left:2%; z-index:20;`, start)
-	// m('div', {class:"frameHidden"}, exercises[2])
-]
-
-
-		return { view, onclickSolve, onclickSkip }
+		return { view, onclickSolve, onclickSkip, updating }
 	}
 
 	return {
