@@ -52,7 +52,9 @@ z-index: 2;
 `)
 
 let exercises;
-let start
+let bottomExercise
+let top;
+let bottom;
 
 export const plain = ({ query, store, info }) => {
 	function App(vnode) {
@@ -68,14 +70,13 @@ export const plain = ({ query, store, info }) => {
 			m("gem-wrapper" + b`position:absolute; bottom: 2%; left: 2%; width:95%`, { app: exercise }, text)]
 		);
 		exercises = [element('diplain', "first element"), element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")];
-		let top = exercises.slice(0,1);
+		bottomExercise = [element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")]
+		top = exercises[0];
 		// bottom = m("div", { class: "element", id: "frame" }, "default element");
-		let bottom = exercises.slice(1,2);
-		console.log("exercises after slice")
-		console.log(exercises)
+		bottom = exercises.slice(1,2);
 		let wasClicked = true;
-		start = 0;
 
+		let start = 0;
 		let tl = gsap.timeline({repeat: 0, repeatDelay: 0});
 
 		function onclickSolve() {
@@ -89,25 +90,11 @@ export const plain = ({ query, store, info }) => {
 					scale: 1.2,
 					duration: 1,
 				});
-				start ++;
-				let deleted = exercises.shift();
-				exercises.shift();
-				// console.log("exercises after deleting first")
-				// console.log(exercises)
-				exercises.unshift(bottom);
-				top = exercises.slice(0,1);
-				bottom = exercises.slice(1,2);
-				// console.log("new bottom element")
-				// console.log(bottom);
-				// console.log(exercises);
+				setTimeout(updating,2500)
+		}
 
-				// document.querySelector(".frameTop").innerHtml = m('div', {class:"frameTop"}, top);
-				// console.log("this is supposed to be the new top element!!!!!!!!");
-				// console.log(top);
-				// document.querySelector(".frameBottom").innerHtml = m('div', {class:"frameBottom"}, bottom);
-				// top = exercises[start];
-				// bottom = elbottom;
-
+		function updating(){
+			start += 1;
 
 				tl.to(".frameTop", {
 					x: 0,
@@ -141,8 +128,8 @@ export const plain = ({ query, store, info }) => {
 		}
 
 
-		const view = _ => [m('div', {class:"frameTop"}, top),
-		m('div', {class:"frameBottom"}, bottom),
+		const view = _ => [m('div', {class:"frameTop"}, exercises[start]),
+		m('div', {class:"frameBottom"}, bottomExercise[start]),
 		m('h1'+b`position:absolute; top:2%; left:2%; z-index:20;`, start)
 	// m('div', {class:"frameHidden"}, exercises[2])
 ]
