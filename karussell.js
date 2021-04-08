@@ -60,15 +60,7 @@ position: absolute;
 right: 2%;
 top: 2%;
 `)
-let exercises;
-let bottomExercise
-// let top;
-// let bottom;
-let start;
-
-
-
-let tl = gsap.timeline({ repeat: 0, repeatDelay: 0 });
+const tl = gsap.timeline({ repeat: 0, repeatDelay: 0 });
 function onclickSolve() {
 	tl.to(".frameTop", {
 		x: 200,
@@ -86,28 +78,30 @@ function onclickSolve() {
 		bottom: "10%",
 		opacity: 1,
 		duration: 1,
-	},"-=1");
+	}, "-=1");
 	problems[problemIdx] = true;
-			problemIdx++;
-			if (problemIdx >= problems.length)
-			{
-				problemIdx = 0;
-			}
-			updateProgressBar();
+	problemIdx++;
+	if (problemIdx >= problems.length) {
+		problemIdx = 0;
+	}
+	updateProgressBar();
 
-	setTimeout(() => {
-		start += 1;
-		console.log("start was updated to: " + start
-		);
-	}, 1000);
 
 	setTimeout(updating, 2100);
-
 }
 
 let wasClicked = true;
 function updating() {
-	console.log(start);
+	start += 1;
+	if(start < gems.length){
+		top = element(gems[start], text[start]);
+	}else top = null;
+	if(start < gems.length-1){
+		bottom = element(gems[start+1], text[start+1]);
+	} else bottom = null;
+	if(start < gems.length -2){
+		hidden = element(gems[start+2], text[start+2])
+	} else hidden = null
 
 	tl.to(".frameTop", {
 		x: 0,
@@ -118,13 +112,13 @@ function updating() {
 		height: "40%",
 		width: "40%",
 		left: "30%",
-		top:null,
+		top: null,
 		bottom: "10%",
-		opacity:1,
+		opacity: 1,
 		duration: 0,
 	});
 	tl.to(".frameHidden", {
-		bottom: "0%",
+		bottom: "5%",
 		opacity: 0,
 		duration: 0,
 	});
@@ -132,38 +126,42 @@ function updating() {
 }
 
 function onclickSkip() {
-		tl.to(".frameTop", {
-			x: -200,
-			opacity: 0,
-			duration: 1
-		})
-		tl.to(".frameBottom", {
-			top: "5%",
-			width: "50%",
-			height: "50%",
-			left: "25%",
-			duration: 1,
-		});
-		tl.to(".frameHidden", {
-			bottom: "10%",
-			opacity: 1,
-			duration: 1,
-		},"-=1");
-		problems[problemIdx] = false;
-			problemIdx++;
-			if (problemIdx >= problems.length)
-			{
-				//problemIdx = 0;
-			}
-			updateProgressBar();
+	tl.to(".frameTop", {
+		x: -200,
+		opacity: 0,
+		duration: 1
+	})
+	tl.to(".frameBottom", {
+		top: "5%",
+		width: "50%",
+		height: "50%",
+		left: "25%",
+		duration: 1,
+	});
+	tl.to(".frameHidden", {
+		bottom: "10%",
+		opacity: 1,
+		duration: 1,
+	}, "-=1");
+	problems[problemIdx] = false;
+	unsolved.push(problemIdx);
+	problemIdx++;
+	if (problemIdx >= problems.length) {
+		//problemIdx = 0;
+	}
+	updateProgressBar();
 
-		setTimeout(() => {
-			start += 1;
-			console.log("start was updated to: " + start
-			);
-		}, 1000);
-	
-		setTimeout(updating, 2100);
+
+
+	setTimeout(() => {
+		let skippedText = text[start];
+		let skippedGem = gems[start];
+		text.push(skippedText);
+		gems.push(skippedGem)
+
+	}, 500);
+
+	setTimeout(updating, 2000);
 
 }
 
@@ -175,7 +173,6 @@ function updateProgressBar() {
 	var highlightedChunkAdditionalSize = 10;
 
 	var c = document.querySelector('.myCanvas');
-	console.log(c);
 	c.width = 100
 	c.height = 500
 	var ctx = c.getContext("2d");
@@ -184,11 +181,10 @@ function updateProgressBar() {
 	ctx.beginPath();
 	ctx.beginPath();
 	ctx.fillStyle = "#EEEEEE";
-	ctx.fillRect(progressBarXPos, progressBarYPos, progressBarWidth, progressBarHeight);  
+	ctx.fillRect(progressBarXPos, progressBarYPos, progressBarWidth, progressBarHeight);
 	ctx.stroke();
 
-	for (var i = 0; i < problems.length; i++)
-	{
+	for (var i = 0; i < problems.length; i++) {
 		var chunkHeight = (progressBarHeight / problems.length);
 		var yPos = progressBarYPos + i * chunkHeight;
 
@@ -204,8 +200,7 @@ function updateProgressBar() {
 		var realXPos = progressBarXPos;
 		var realYPos = yPos;
 
-		if (i == problemIdx)
-		{
+		if (i == problemIdx) {
 			realWidth += highlightedChunkAdditionalSize;
 			realHeight += highlightedChunkAdditionalSize;
 			realXPos -= highlightedChunkAdditionalSize / 2;
@@ -214,45 +209,66 @@ function updateProgressBar() {
 
 		ctx.beginPath();
 		ctx.fillStyle = color;
-		ctx.fillRect(realXPos, realYPos, realWidth, realHeight);  
+		ctx.fillRect(realXPos, realYPos, realWidth, realHeight);
 		ctx.stroke();
 	}
 }
 
-
+const element = (exercise, text) => m("div", { class: "element", id: "frame" }, [
+	m("button", {
+		onclick: onclickSkip.bind(),
+		class: "skip"
+	}, "skip"),
+	m("button", {
+		onclick: onclickSolve.bind(),
+		class: "solve"
+	}, "solve"),
+	m("gem-wrapper" + b`position:absolute; bottom: 2%; left: 2%; width:95%`, { app: exercise }, text)]
+);
+const exercises = [element('diplain', m('h1', "First Question?")), element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")];
+const bottomExercise = [element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")];
+const gems = ["diplain", "diflashcard", "diplain", "diplain"];
+const text = ["first damn question", "second shit", "third thingy", "last part"];
+const unsolved = [];
 let problems
 let problemIdx
+let start = 0;
+let skipped;
+let top;
+let bottom;
+let hidden;
+
+
+
+
+
+
+
 export const plain = ({ query, store, info }) => {
 	function App(vnode) {
-		
-		let element = (exercise, text) => m("div", { class: "element", id: "frame" }, [
-			m("button", {
-				onclick: onclickSkip.bind(),
-				class: "skip"
-			}, "skip"),
-			m("button", {
-				onclick: onclickSolve.bind(),
-				class: "solve"
-			}, "solve"),
-			m("gem-wrapper" + b`position:absolute; bottom: 2%; left: 2%; width:95%`, { app: exercise }, text)]
-		);
+		//exercises = [element('diplain', m('h1', "First Question?")), element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")];
+		//bottomExercise = [element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")]
 
-		setTimeout(updateProgressBar, 200);
-
-		exercises = [element('diplain', "first element"), element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")];
-		bottomExercise = [element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")]
 		problems = new Array(exercises.length);
 		problemIdx = 0;
-		start = 0;
+		//start = 0;
+		//top = exercises[start];
+		top = element(gems[start], text[start]);
+		//bottom = bottomExercise[start];
+		//bottom = exercises[start + 1];
+		bottom = element(gems[start+1], text[start+1]);
+		hidden = element(gems[start+2], text[start+2]);
 
-		const view = _ => [m('div', { class: "frameTop" }, exercises[start]),
-		m('div', { class: "frameBottom" }, bottomExercise[start]),
+		const view = _ => [m('div', { class: "frameTop" }, top),
+		m('div', { class: "frameBottom" }, bottom),
 		m('h1' + b`position:absolute; top:2%; left:2%; z-index:20;`, start),
-		m(`canvas`,{class:'myCanvas'}),
-		 m('div', {class:"frameHidden"}, exercises[start + 2])
+		m(`canvas`, { class: 'myCanvas', width:100, height:500 }),
+		m('div', { class: "frameHidden" }, hidden) //works
 		]
+		setTimeout(updateProgressBar,100);
 
 		return { view, onclickSolve, onclickSkip, updating, updateProgressBar }
+		
 	}
 
 	return {
