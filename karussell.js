@@ -173,8 +173,7 @@ function onclickSkip() {
 
 function updateProgressBar() {
 	var progressBarXPos = 50;
-	var progressBarYPos = 20;
-	var progressBarWidth = 10;
+	var progressBarYPos = 50;
 	var progressBarHeight = 300;
 	var highlightedChunkAdditionalSize = 10;
 
@@ -195,28 +194,36 @@ function updateProgressBar() {
 			} else {
 				color = "#EEEEEE";
 			}
-	
-			var realWidth = progressBarWidth;
 			var realHeight = chunkHeight;
 			var realXPos = progressBarXPos;
 			var realYPos = yPos;
+			ctx.lineWidth = 1;
+			ctx.strokeStyle = '#000000';
 
 			if(problemIdx == problems.length && i == unsolved[iteratorUnsolved]){
-				realWidth += highlightedChunkAdditionalSize;
 				realHeight += highlightedChunkAdditionalSize;
 				realXPos -= highlightedChunkAdditionalSize / 2;
 				realYPos -= highlightedChunkAdditionalSize / 2;
+				ctx.lineWidth = 5;
+				ctx.strokeStyle = '#00FF00';
 			} else if (i == problemIdx) {
-				realWidth += highlightedChunkAdditionalSize;
 				realHeight += highlightedChunkAdditionalSize;
 				realXPos -= highlightedChunkAdditionalSize / 2;
 				realYPos -= highlightedChunkAdditionalSize / 2;
+				ctx.lineWidth = 5;
+				ctx.strokeStyle = '#00FF00';
 			}
 	
+			// ctx.beginPath();
+			// ctx.fillStyle = color;
+			// ctx.fillRect(realXPos, realYPos, realWidth, realHeight);
+			// ctx.stroke();
+
 			ctx.beginPath();
 			ctx.fillStyle = color;
-			ctx.fillRect(realXPos, realYPos, realWidth, realHeight);
+			ctx.arc(realXPos, realYPos, realHeight/4, 0, 2*Math.PI);  
 			ctx.stroke();
+			ctx.fill();
 		}
 		if(problems.length == problemIdx){
 		//iteratorUnsolved++;
@@ -235,22 +242,25 @@ function updateProgressBar() {
 				color = "#EEEEEE";
 			}
 	
-			var realWidth = progressBarWidth;
 			var realHeight = chunkHeight;
 			var realXPos = progressBarXPos;
 			var realYPos = yPos;
+			ctx.lineWidth = 1;
+			ctx.strokeStyle = '#000000';
 	
 			if (i == unsolved[iteratorUnsolved]) {
-				realWidth += highlightedChunkAdditionalSize;
 				realHeight += highlightedChunkAdditionalSize;
 				realXPos -= highlightedChunkAdditionalSize / 2;
 				realYPos -= highlightedChunkAdditionalSize / 2;
+				ctx.lineWidth = 5;
+				ctx.strokeStyle = '#00FF00';
 			}
 	
 			ctx.beginPath();
 			ctx.fillStyle = color;
-			ctx.fillRect(realXPos, realYPos, realWidth, realHeight);
+			ctx.arc(realXPos, realYPos, realHeight/4, 0, 2*Math.PI);  
 			ctx.stroke();
+			ctx.fill();
 		}
 		
 		//iteratorUnsolved++;
