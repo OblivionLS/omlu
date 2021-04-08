@@ -89,8 +89,6 @@ function onclickSolve() {
 
 	setTimeout(updating, 2100);
 }
-
-let wasClicked = true;
 function updating() {
 	start += 1;
 	if(start < gems.length){
@@ -178,40 +176,44 @@ function updateProgressBar() {
 	var ctx = c.getContext("2d");
 	ctx.clearRect(0, 0, c.width, c.height);
 
-	ctx.beginPath();
-	ctx.beginPath();
-	ctx.fillStyle = "#EEEEEE";
-	ctx.fillRect(progressBarXPos, progressBarYPos, progressBarWidth, progressBarHeight);
-	ctx.stroke();
-
-	for (var i = 0; i < problems.length; i++) {
-		var chunkHeight = (progressBarHeight / problems.length);
-		var yPos = progressBarYPos + i * chunkHeight;
-
-		var color;
-		if (problems[i] == true) {
-			color = "#00FF00";
-		} else {
-			color = "#EEEEEE";
+	if(firstCicel){
+		for (var i = 0; i < problems.length; i++) {
+			var chunkHeight = (progressBarHeight / problems.length);
+			var yPos = progressBarYPos + i * chunkHeight;
+	
+			var color;
+			if (problems[i] == true) {
+				color = "#00FF00";
+			} else {
+				color = "#EEEEEE";
+			}
+	
+			var realWidth = progressBarWidth;
+			var realHeight = chunkHeight;
+			var realXPos = progressBarXPos;
+			var realYPos = yPos;
+	
+			if (i == problemIdx) {
+				realWidth += highlightedChunkAdditionalSize;
+				realHeight += highlightedChunkAdditionalSize;
+				realXPos -= highlightedChunkAdditionalSize / 2;
+				realYPos -= highlightedChunkAdditionalSize / 2;
+			}
+	
+			ctx.beginPath();
+			ctx.fillStyle = color;
+			ctx.fillRect(realXPos, realYPos, realWidth, realHeight);
+			ctx.stroke();
 		}
 
-		var realWidth = progressBarWidth;
-		var realHeight = chunkHeight;
-		var realXPos = progressBarXPos;
-		var realYPos = yPos;
-
-		if (i == problemIdx) {
-			realWidth += highlightedChunkAdditionalSize;
-			realHeight += highlightedChunkAdditionalSize;
-			realXPos -= highlightedChunkAdditionalSize / 2;
-			realYPos -= highlightedChunkAdditionalSize / 2;
+		if(problems.length - 1 == problemIdx){
+			firstCicel = false;
 		}
-
-		ctx.beginPath();
-		ctx.fillStyle = color;
-		ctx.fillRect(realXPos, realYPos, realWidth, realHeight);
-		ctx.stroke();
+	}else{
+		
 	}
+
+	
 }
 
 const element = (exercise, text) => m("div", { class: "element", id: "frame" }, [
@@ -230,6 +232,7 @@ const bottomExercise = [element('diflashcard', "second element"), element('dipla
 const gems = ["diplain", "diflashcard", "diplain", "diplain"];
 const text = ["first damn question", "second shit", "third thingy", "last part"];
 const unsolved = [];
+let firstCicel = true;
 let problems
 let problemIdx
 let start = 0;

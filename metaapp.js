@@ -246,7 +246,7 @@ export const plain = ({ query, store, info }) => {
 		m('div', { class: "frameBottom" }, bottomExercise[start]),
 		m('h1' + b`position:absolute; top:2%; left:2%; z-index:20;`, start),
 		m(`canvas`,{class:'myCanvas'}),
-		 m('div', {class:"frameHidden"}, exercises[start + 2])
+		m('div', {class:"frameHidden"}, exercises[start + 2])
 		]
 
 		return { view, onclickSolve, onclickSkip, updating, updateProgressBar }
