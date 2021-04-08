@@ -197,11 +197,15 @@ function updateProgressBar() {
 		var realHeight = chunkHeight;
 		var realXPos = progressBarXPos;
 		var realYPos = yPos;
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = '#000000';
 
 		if (i == problemIdx)
 		{
 			realWidth += highlightedChunkAdditionalSize;
 			realHeight += highlightedChunkAdditionalSize;
+			ctx.lineWidth = 5;
+			ctx.strokeStyle = '#00FF00';	
 		}
 
 		ctx.beginPath();
