@@ -43,15 +43,16 @@ height: 40%;
 width:40%;
 position:absolute;
 left: 30%
-bottom: 5%;
+bottom: 10%;
 z-index: 5;
 `)
 b.css(".frameHidden", `
-height: 30%; 
-width:30%;
+height: 40%; 
+width:40%;
+opacity: 0;
 position:absolute;
-left: 35%
-bottom: -20%;
+left: 30%
+bottom: 5%;
 z-index: 2;
 `)
 b.css(".myCanvas", `
@@ -81,6 +82,11 @@ function onclickSolve() {
 		left: "25%",
 		duration: 1,
 	});
+	tl.to(".frameHidden", {
+		bottom: "10%",
+		opacity: 1,
+		duration: 1,
+	},"-=1");
 	problems[problemIdx] = true;
 			problemIdx++;
 			if (problemIdx >= problems.length)
@@ -113,8 +119,13 @@ function updating() {
 		width: "40%",
 		left: "30%",
 		top:null,
-		bottom: "5%",
+		bottom: "10%",
 		opacity:1,
+		duration: 0,
+	});
+	tl.to(".frameHidden", {
+		bottom: "0%",
+		opacity: 0,
 		duration: 0,
 	});
 	m.redraw();
@@ -133,6 +144,11 @@ function onclickSkip() {
 			left: "25%",
 			duration: 1,
 		});
+		tl.to(".frameHidden", {
+			bottom: "10%",
+			opacity: 1,
+			duration: 1,
+		},"-=1");
 		problems[problemIdx] = false;
 			problemIdx++;
 			if (problemIdx >= problems.length)
@@ -154,7 +170,7 @@ function onclickSkip() {
 function updateProgressBar() {
 	var progressBarXPos = 50;
 	var progressBarYPos = 20;
-	var progressBarWidth = 50;
+	var progressBarWidth = 10;
 	var progressBarHeight = 300;
 
 	var c = document.querySelector('.myCanvas');
@@ -208,23 +224,19 @@ export const plain = ({ query, store, info }) => {
 			m("gem-wrapper" + b`position:absolute; bottom: 2%; left: 2%; width:95%`, { app: exercise }, text)]
 		);
 
-
-		setTimeout(updateProgressBar, 1000);
+		setTimeout(updateProgressBar, 200);
 
 		exercises = [element('diplain', "first element"), element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")];
 		bottomExercise = [element('diflashcard', "second element"), element('diplain', "yes this is the third"), element('diplain', "last element")]
 		problems = new Array(exercises.length);
 		problemIdx = 0;
-		// top = exercises[0];
-		// bottom = m("div", { class: "element", id: "frame" }, "default element");
-		// bottom = exercises.slice(1, 2);
 		start = 0;
 
 		const view = _ => [m('div', { class: "frameTop" }, exercises[start]),
 		m('div', { class: "frameBottom" }, bottomExercise[start]),
 		m('h1' + b`position:absolute; top:2%; left:2%; z-index:20;`, start),
-		m(`canvas`,{class:'myCanvas'})
-			// m('div', {class:"frameHidden"}, exercises[2])
+		m(`canvas`,{class:'myCanvas'}),
+		 m('div', {class:"frameHidden"}, exercises[start + 2])
 		]
 
 		return { view, onclickSolve, onclickSkip, updating, updateProgressBar }
