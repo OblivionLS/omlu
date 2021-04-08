@@ -153,7 +153,7 @@ function onclickSkip() {
 			problemIdx++;
 			if (problemIdx >= problems.length)
 			{
-				problemIdx = 0;
+				//problemIdx = 0;
 			}
 			updateProgressBar();
 
@@ -172,6 +172,7 @@ function updateProgressBar() {
 	var progressBarYPos = 20;
 	var progressBarWidth = 10;
 	var progressBarHeight = 300;
+	var highlightedChunkAdditionalSize = 10;
 
 	var c = document.querySelector('.myCanvas');
 	console.log(c);
@@ -198,10 +199,22 @@ function updateProgressBar() {
 			color = "#EEEEEE";
 		}
 
-		ctx.beginPath();
+		var realWidth = progressBarWidth;
+		var realHeight = chunkHeight;
+		var realXPos = progressBarXPos;
+		var realYPos = yPos;
+
+		if (i == problemIdx)
+		{
+			realWidth += highlightedChunkAdditionalSize;
+			realHeight += highlightedChunkAdditionalSize;
+			realXPos -= highlightedChunkAdditionalSize / 2;
+			realYPos -= highlightedChunkAdditionalSize / 2;
+		}
+
 		ctx.beginPath();
 		ctx.fillStyle = color;
-		ctx.fillRect(progressBarXPos, yPos, progressBarWidth, chunkHeight);  
+		ctx.fillRect(realXPos, realYPos, realWidth, realHeight);  
 		ctx.stroke();
 	}
 }
