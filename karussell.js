@@ -79,9 +79,15 @@ function onclickSolve() {
 		opacity: 1,
 		duration: 1,
 	}, "-=1");
-	problems[problemIdx] = true;
-	problemIdx++;
-	if (problemIdx >= problems.length) {
+
+	if(firstCicel){
+		problems[problemIdx] = true;
+		problemIdx++;
+	} else{
+		problems[unsolved[iteratorUnsolved]] = true;
+		iteratorUnsolved++;
+	} 
+	if (problemIdx > problems.length) {
 		problemIdx = 0;
 	}
 	updateProgressBar();
@@ -141,11 +147,13 @@ function onclickSkip() {
 		opacity: 1,
 		duration: 1,
 	}, "-=1");
-	problems[problemIdx] = false;
+
+	if(firstCicel)problems[problemIdx] = false;
+	else problems[unsolved[iteratorUnsolved]] = false
 	unsolved.push(problemIdx);
 	problemIdx++;
-	if (problemIdx >= problems.length) {
-		//problemIdx = 0;
+	if (problemIdx > problems.length) {
+		problemIdx = 0;
 	}
 	updateProgressBar();
 
@@ -192,8 +200,13 @@ function updateProgressBar() {
 			var realHeight = chunkHeight;
 			var realXPos = progressBarXPos;
 			var realYPos = yPos;
-	
-			if (i == problemIdx) {
+
+			if(problemIdx == problems.length && i == unsolved[iteratorUnsolved]){
+				realWidth += highlightedChunkAdditionalSize;
+				realHeight += highlightedChunkAdditionalSize;
+				realXPos -= highlightedChunkAdditionalSize / 2;
+				realYPos -= highlightedChunkAdditionalSize / 2;
+			} else if (i == problemIdx) {
 				realWidth += highlightedChunkAdditionalSize;
 				realHeight += highlightedChunkAdditionalSize;
 				realXPos -= highlightedChunkAdditionalSize / 2;
@@ -205,12 +218,42 @@ function updateProgressBar() {
 			ctx.fillRect(realXPos, realYPos, realWidth, realHeight);
 			ctx.stroke();
 		}
-
-		if(problems.length - 1 == problemIdx){
+		if(problems.length == problemIdx){
+		//iteratorUnsolved++;
 			firstCicel = false;
+			console.log("firstCycle is over");
 		}
 	}else{
+		for (var i = 0; i < problems.length; i++) {
+			var chunkHeight = (progressBarHeight / problems.length);
+			var yPos = progressBarYPos + i * chunkHeight;
+	
+			var color;
+			if (problems[i] == true) {
+				color = "#00FF00";
+			} else {
+				color = "#EEEEEE";
+			}
+	
+			var realWidth = progressBarWidth;
+			var realHeight = chunkHeight;
+			var realXPos = progressBarXPos;
+			var realYPos = yPos;
+	
+			if (i == unsolved[iteratorUnsolved]) {
+				realWidth += highlightedChunkAdditionalSize;
+				realHeight += highlightedChunkAdditionalSize;
+				realXPos -= highlightedChunkAdditionalSize / 2;
+				realYPos -= highlightedChunkAdditionalSize / 2;
+			}
+	
+			ctx.beginPath();
+			ctx.fillStyle = color;
+			ctx.fillRect(realXPos, realYPos, realWidth, realHeight);
+			ctx.stroke();
+		}
 		
+		//iteratorUnsolved++;
 	}
 
 	
@@ -240,6 +283,7 @@ let skipped;
 let top;
 let bottom;
 let hidden;
+let iteratorUnsolved = 0;
 
 
 
