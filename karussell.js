@@ -100,7 +100,7 @@ function updating() {
 	if(start < gems.length){
 		top = element(gems[start], text[start]);
 	}else top = null;
-	if(start < gems.length-1){
+	if(start < gems.length -1){
 		bottom = element(gems[start+1], text[start+1]);
 	} else bottom = null;
 	if(start < gems.length -2){
@@ -148,6 +148,7 @@ function onclickSkip() {
 		duration: 1,
 	}, "-=1");
 
+	unsolved.push(problemIdx);
 	if(firstCicel){
 		problems[problemIdx] = false;
 		problemIdx++;
@@ -155,15 +156,10 @@ function onclickSkip() {
 		problems[unsolved[iteratorUnsolved]] = false;
 		iteratorUnsolved++;
 	} 
-	unsolved.push(problemIdx);
-	problemIdx++;
 	if (problemIdx > problems.length) {
 		problemIdx = 0;
 	}
 	updateProgressBar();
-
-
-
 	setTimeout(() => {
 		let skippedText = text[start];
 		let skippedGem = gems[start];
@@ -284,9 +280,11 @@ let firstCicel = true;
 let problems
 let problemIdx
 let start = 0;
+
 let top;
 let bottom;
 let hidden;
+
 let iteratorUnsolved = 0;
 
 
@@ -294,15 +292,18 @@ export const plain = ({ query, store, info }) => {
 	function App(vnode) {
 		problems = new Array(gems.length);
 		problemIdx = 0;
+		
 		top = element(gems[start], text[start]);
 		bottom = element(gems[start+1], text[start+1]);
 		hidden = element(gems[start+2], text[start+2]);
 
-		const view = _ => [m('div', { class: "frameTop" }, top),
-		m('div', { class: "frameBottom" }, bottom),
+
+		const view = _ => [
 		m('h1' + b`position:absolute; top:2%; left:2%; z-index:20;`, start),
+		m('div', { class: "frameTop" }, top),
+		m('div', { class: "frameBottom" }, bottom),
+		m('div', { class: "frameHidden" }, hidden),
 		m(`canvas`, { class: 'myCanvas', width:100, height:500 }),
-		m('div', { class: "frameHidden" }, hidden)
 		]
 		setTimeout(updateProgressBar,100);
 
