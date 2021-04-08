@@ -226,7 +226,6 @@ function updateProgressBar() {
 			ctx.fill();
 		}
 		if(problems.length == problemIdx){
-		//iteratorUnsolved++;
 			firstCicel = false;
 			console.log("firstCycle is over");
 		}
@@ -262,8 +261,6 @@ function updateProgressBar() {
 			ctx.stroke();
 			ctx.fill();
 		}
-		
-		//iteratorUnsolved++;
 	}
 
 	
