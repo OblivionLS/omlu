@@ -205,7 +205,7 @@ function updateProgressBar() {
 			realWidth += highlightedChunkAdditionalSize;
 			realHeight += highlightedChunkAdditionalSize;
 			ctx.lineWidth = 5;
-			ctx.strokeStyle = '#00FF00';	
+			ctx.strokeStyle = '#00FF00';
 		}
 
 		ctx.beginPath();
